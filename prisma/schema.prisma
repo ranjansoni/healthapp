@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model daily_logs {
+  id              Int            @id @default(autoincrement())
+  date            DateTime?      @db.Date
+  routine_item_id Int?
+  status          Boolean?       @default(false)
+  notes           String?        @db.Text
+  routine_items   routine_items? @relation(fields: [routine_item_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "daily_logs_ibfk_1")
+
+  @@unique([date, routine_item_id], map: "unique_log")
+  @@index([routine_item_id], map: "routine_item_id")
+}
+
+model routine_items {
+  id          Int          @id @default(autoincrement())
+  time_of_day String?      @db.VarChar(255)
+  description String?      @db.Text
+  category    String?      @db.VarChar(50)
+  created_at  DateTime?    @default(now()) @db.Timestamp(0)
+  valid_from  DateTime?    @default(dbgenerated("'2023-01-01'")) @db.Date
+  valid_to    DateTime?    @default(dbgenerated("'9999-12-31'")) @db.Date
+  series_id   String?      @db.VarChar(36)
+  daily_logs  daily_logs[]
+}
+
+model weight_logs {
+  id             Int       @id @default(autoincrement())
+  date           DateTime  @unique(map: "date") @db.Date
+  weight_kg      Decimal   @db.Decimal(5, 2)
+  notes          String?   @db.Text
+  created_at     DateTime? @default(now()) @db.Timestamp(0)
+  updated_at     DateTime? @default(now()) @db.Timestamp(0)
+  sleep_hours    Decimal?  @db.Decimal(3, 1)
+  sleep_score    Int?
+  steps          Int?
+  floors_climbed Int?
+}

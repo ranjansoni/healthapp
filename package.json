@@ -3,20 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3301",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3301",
     "lint": "eslint"
   },
   "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "chart.js": "^4.5.1",
+    "mysql2": "^3.15.3",
     "next": "16.0.5",
     "react": "19.2.0",
+    "react-chartjs-2": "^5.3.1",
     "react-dom": "19.2.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "16.0.5",
+    "prisma": "^5.22.0",
     "tailwindcss": "^4"
   }
 }
